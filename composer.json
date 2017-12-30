@@ -1,0 +1,46 @@
+{
+    "name": "autaut03/laravel-api-docs-generator",
+    "version": "1.0.0",
+    "license": "MIT",
+    "description": "Generate beautiful API documentation from your Laravel application",
+    "keywords": [
+        "API",
+        "Documentation",
+        "Laravel"
+    ],
+    "homepage": "http://github.com/autaut03/laravel-api-docs-generator",
+    "authors": [
+        {
+            "name": "Oleksandr Prypkhan",
+            "email": "autaut03@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "laravel/framework": "~5.4",
+        "mpociot/reflection-docblock": "^1.0",
+        "ramsey/uuid": "^3.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.0",
+        "phpunit/phpunit": "~4.0 || ~5.0",
+        "mockery/mockery": "^0.9.5"
+    },
+    "autoload": {
+        "psr-0": {
+            "AlexWells\\ApiDocsGenerator": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AlexWells\\ApiDocsGenerator\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AlexWells\\ApiDocsGenerator\\PackageServiceProvider"
+            ]
+        }
+    }
+}
