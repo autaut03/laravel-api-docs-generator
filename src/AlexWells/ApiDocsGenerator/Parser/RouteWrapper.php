@@ -1,7 +1,8 @@
 <?php
 
-namespace AlexWells\ApiDocsGenerator;
+namespace AlexWells\ApiDocsGenerator\Parser;
 
+use AlexWells\ApiDocsGenerator\Helpers;
 use ReflectionClass;
 use ReflectionParameter;
 use Illuminate\Routing\Route;

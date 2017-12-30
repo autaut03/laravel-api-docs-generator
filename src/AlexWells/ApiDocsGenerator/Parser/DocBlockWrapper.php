@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexWells\ApiDocsGenerator;
+namespace AlexWells\ApiDocsGenerator\Parser;
 
 use Mpociot\Reflection\DocBlock;
 use Illuminate\Support\Collection;

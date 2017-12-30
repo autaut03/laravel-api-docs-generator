@@ -4,7 +4,7 @@ namespace AlexWells\ApiDocsGenerator\Commands;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use AlexWells\ApiDocsGenerator\RouteWrapper;
+use AlexWells\ApiDocsGenerator\Parser\RouteWrapper;
 use AlexWells\ApiDocsGenerator\Postman\CollectionGenerator;
 use AlexWells\ApiDocsGenerator\Exceptions\RouteGenerationError;
 
