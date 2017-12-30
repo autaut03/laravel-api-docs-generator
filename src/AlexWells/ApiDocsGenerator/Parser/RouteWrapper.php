@@ -2,19 +2,19 @@
 
 namespace AlexWells\ApiDocsGenerator;
 
-use AlexWells\ApiDocsGenerator\Exceptions\ClosureRouteException;
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
-use AlexWells\ApiDocsGenerator\Exceptions\NoTypeSpecifiedException;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Http\FormRequest;
+use ReflectionClass;
+use ReflectionParameter;
 use Illuminate\Routing\Route;
+use ReflectionFunctionAbstract;
 use Illuminate\Support\Collection;
 use Mpociot\Reflection\DocBlock\Tag;
-use ReflectionClass;
-use ReflectionFunctionAbstract;
-use ReflectionParameter;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
+use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
+use AlexWells\ApiDocsGenerator\Exceptions\ClosureRouteException;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use AlexWells\ApiDocsGenerator\Exceptions\NoTypeSpecifiedException;
 
 class RouteWrapper
 {
@@ -144,7 +144,7 @@ class RouteWrapper
     public function getUri()
     {
         if (version_compare(app()->version(), '5.4', '<')) {
-            /** @noinspection PhpUndefinedMethodInspection */
+            /* @noinspection PhpUndefinedMethodInspection */
             return $this->route->getUri();
         }
 
@@ -164,12 +164,13 @@ class RouteWrapper
     /**
      * Returns route's action string.
      *
-     * @return string
      * @throws ClosureRouteException
+     *
+     * @return string
      */
     public function getAction()
     {
-        if (!$this->isSupported()) {
+        if (! $this->isSupported()) {
             throw new ClosureRouteException('Closure callbacks are not supported. Please use a controller method.');
         }
 
@@ -189,7 +190,7 @@ class RouteWrapper
     /**
      * Checks if the route is supported.
      *
-     * @return boolean
+     * @return bool
      */
     public function isSupported()
     {
@@ -200,12 +201,13 @@ class RouteWrapper
      * Checks if it matches any of the masks.
      *
      * @param array $masks
-     * @return boolean
+     *
+     * @return bool
      */
     public function matchesAnyMask($masks)
     {
         return collect($masks)
-            ->contains(function($mask) {
+            ->contains(function ($mask) {
                 return str_is($mask, $this->getUri()) || str_is($mask, $this->getName());
             });
     }
@@ -233,7 +235,7 @@ class RouteWrapper
 
             if ($methodParameter) {
                 $parameterType = $methodParameter->getType();
-                if (!$parameterType && !$this->options['noTypeChecks']) {
+                if (! $parameterType && ! $this->options['noTypeChecks']) {
                     throw new NoTypeSpecifiedException("No type specified for parameter `$name`");
                 }
 
@@ -299,7 +301,7 @@ class RouteWrapper
      */
     protected function getQueryValidationRules()
     {
-        if (!($formRequestReflection = $this->getFormRequestClassReflection())) {
+        if (! ($formRequestReflection = $this->getFormRequestClassReflection())) {
             return [];
         }
 
@@ -375,7 +377,7 @@ class RouteWrapper
      */
     public function getParameterDescriptions()
     {
-        if (!$this->parameterDescriptions) {
+        if (! $this->parameterDescriptions) {
             return $this->parameterDescriptions = $this->parseParameterDescriptions();
         }
 
@@ -385,8 +387,9 @@ class RouteWrapper
     /**
      * Parses parameter descriptions.
      *
-     * @return array
      * @throws InvalidTagFormat
+     *
+     * @return array
      */
     protected function parseParameterDescriptions()
     {
@@ -404,7 +407,7 @@ class RouteWrapper
 
                 $in = $parts[0];
 
-                if (!in_array($in, self::PARAMETER_TYPES)) {
+                if (! in_array($in, self::PARAMETER_TYPES)) {
                     throw new InvalidTagFormat(`Invalid parameter location specified for {$tag->getName()}`);
                 }
 
@@ -457,14 +460,14 @@ class RouteWrapper
             ->map(function (DocBlockWrapper $docBlock) {
                 $tag = $docBlock->getDocTag('resource');
 
-                if (!$tag) {
+                if (! $tag) {
                     return null;
                 }
 
                 $resource = $tag->getContent();
 
-                if(!$resource) {
-                    throw new InvalidTagFormat("Resource name not specified");
+                if(! $resource) {
+                    throw new InvalidTagFormat('Resource name not specified');
                 }
 
                 return $resource;
@@ -482,11 +485,11 @@ class RouteWrapper
     {
         return $this->getMethodDocBlock()
             ->getDocTags('response')
-            ->map(function(Tag $tag) {
+            ->map(function (Tag $tag) {
                 $content = $tag->getContent();
                 $content = Helpers::clearNewlines($content);
 
-                if(!$content) {
+                if(! $content) {
                     return null;
                 }
 
@@ -508,8 +511,8 @@ class RouteWrapper
 
                 $content = json_decode($content, true);
 
-                if(!$content) {
-                    throw new InvalidTagFormat("Response tag format is invalid, JSON decode error: " . json_last_error_msg());
+                if(! $content) {
+                    throw new InvalidTagFormat('Response tag format is invalid, JSON decode error: ' . json_last_error_msg());
                 }
 
                 return $content;
@@ -521,7 +524,7 @@ class RouteWrapper
     /**
      * Checks if the route is hidden from docs by annotation.
      *
-     * @return boolean
+     * @return bool
      */
     public function isHiddenFromDocs()
     {
@@ -548,7 +551,7 @@ class RouteWrapper
      */
     protected function getMethodDocBlock()
     {
-        if (!$this->methodDocBlock) {
+        if (! $this->methodDocBlock) {
             return $this->methodDocBlock = new DocBlockWrapper($this->getMethodReflection());
         }
 
@@ -562,7 +565,7 @@ class RouteWrapper
      */
     protected function getControllerDocBlock()
     {
-        if (!$this->controllerDockBlock) {
+        if (! $this->controllerDockBlock) {
             return $this->controllerDockBlock = new DocBlockWrapper($this->getControllerReflection());
         }
 
@@ -576,10 +579,10 @@ class RouteWrapper
      */
     protected function getFormRequestClassReflection()
     {
-        if (!$this->parsedFormRequest) {
+        if (! $this->parsedFormRequest) {
             $methodParameter = $this->getMethodParameter(FormRequest::class);
 
-            if (!$methodParameter) {
+            if (! $methodParameter) {
                 return null;
             }
 
@@ -610,7 +613,7 @@ class RouteWrapper
     /**
      * Returns route method's parameters filtered by type.
      *
-     * @param string $filter A parameter type to filter.
+     * @param string $filter a parameter type to filter
      *
      * @return ReflectionParameter[]
      */
@@ -623,7 +626,7 @@ class RouteWrapper
         }
 
         return array_filter($parameters, function (ReflectionParameter $parameter) use ($filter) {
-            if (!($type = $parameter->getType())) {
+            if (! ($type = $parameter->getType())) {
                 return false;
             }
 

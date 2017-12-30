@@ -93,7 +93,7 @@ class ResponseTest extends BaseRouteTestingClass
         $responses = $this->wrappedRoute(TestResponseController::class . '@shortcutsInsideString')->getResponses();
 
         $this->assertCount(1, $responses);
-        $this->assertEquals(":: int, [ :: int ], int[], { prop: 123 }, { prop :: int }, [ :: { } ]", $responses[0]);
+        $this->assertEquals(':: int, [ :: int ], int[], { prop: 123 }, { prop :: int }, [ :: { } ]', $responses[0]);
     }
 
     public function testThatEscapedQuotesInsideStringsAreParsedCorrectly()

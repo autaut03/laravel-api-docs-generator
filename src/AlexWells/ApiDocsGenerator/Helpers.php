@@ -8,6 +8,7 @@ class Helpers
      * Clears \n characters (and similar) in the string.
      *
      * @param string $string
+     *
      * @return string
      */
     public static function clearNewlines($string)
@@ -19,6 +20,7 @@ class Helpers
      * Converts any case text into normal string (see tests for examples).
      *
      * @param string $string
+     *
      * @return string
      */
     public static function functionNameToText($string)
@@ -42,6 +44,7 @@ class Helpers
      * Replaces camelCase string with label case (normal text), preserving abbreviations.
      *
      * @param string $string
+     *
      * @return string
      */
     public static function camelCaseToLabelCase($string)
@@ -57,17 +60,16 @@ class Helpers
         return preg_replace($re, ' ', $string);
     }
 
-
-
     /**
      * Works similar to ucwords (replaces first character of each word to lower case).
      *
      * @param string $string
+     *
      * @return string
      */
     public static function lcwords($string)
     {
-        return preg_replace_callback('/\b([A-Z])(?(?=\s)(\s)|([a-z]))/', function($match) {
+        return preg_replace_callback('/\b([A-Z])(?(?=\s)(\s)|([a-z]))/', function ($match) {
             return str_replace($match[1], strtolower($match[1]), $match[0]);
         }, $string);
     }

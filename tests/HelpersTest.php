@@ -2,8 +2,8 @@
 
 namespace AlexWells\ApiDocsGenerator\Tests;
 
-use AlexWells\ApiDocsGenerator\Helpers;
 use Orchestra\Testbench\TestCase;
+use AlexWells\ApiDocsGenerator\Helpers;
 
 class HelpersTest extends TestCase
 {
