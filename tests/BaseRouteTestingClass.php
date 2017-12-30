@@ -6,7 +6,6 @@ use Illuminate\Routing\Route;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Contracts\Console\Kernel;
 use AlexWells\ApiDocsGenerator\RouteWrapper;
-use Dingo\Api\Provider\LaravelServiceProvider;
 use AlexWells\ApiDocsGenerator\PackageServiceProvider;
 
 class BaseRouteTestingClass extends TestCase
@@ -109,7 +108,6 @@ class BaseRouteTestingClass extends TestCase
     protected function getPackageProviders($app)
     {
         return [
-            LaravelServiceProvider::class,
             PackageServiceProvider::class
         ];
     }

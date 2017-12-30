@@ -5,6 +5,8 @@
 [![License](https://poser.pugx.org/autaut03/laravel-api-docs-generator/license)](https://packagist.org/packages/autaut03/laravel-api-docs-generator)
 [![Build Status](https://travis-ci.org/autaut03/laravel-api-docs-generator.svg?branch=master)](https://travis-ci.org/autaut03/laravel-api-docs-generator)
 [![codecov](https://codecov.io/gh/autaut03/laravel-api-docs-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/autaut03/laravel-api-docs-generator)
+[![StyleCI](https://styleci.io/repos/115812998/shield)](https://styleci.io/repos/115812998)
+[![PHP Eye](http://php-eye.com/badge/autaut03/laravel-api-docs-generator/tested.svg?style=flat-square)](https://php-eye.com/package/autaut03/laravel-api-docs-generator)
 
 # BETA VERSION
 
