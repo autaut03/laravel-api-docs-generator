@@ -4,5 +4,17 @@ enabled:
   - phpdoc_order
   - phpdoc_separation
   - unalign_double_arrow
+  - concat_with_spaces
+  - phpdoc_annotation_without_dot
+
+disabled:
+  - trailing_comma_in_multiline_array
+  - concat_without_spaces
+  - simplified_null_return
+  - braces
+
+finder:
+  exclude:
+    - "tests/Fixtures"
 
 linting: true

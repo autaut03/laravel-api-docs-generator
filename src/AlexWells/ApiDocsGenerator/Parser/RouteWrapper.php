@@ -305,7 +305,7 @@ class RouteWrapper
 
         $className = $formRequestReflection->getName();
 
-        /**
+        /*
          * TODO: REFACTOR BEGIN
          */
         $container = app();
@@ -324,7 +324,7 @@ class RouteWrapper
         $formRequest = $containerReflection->getMethod('make')->invoke($container, $className);
 
         $property->setValue($container, $originalValue);
-        /**
+        /*
          * TODO: REFACTOR END
          */
 

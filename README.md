@@ -1,6 +1,10 @@
 ## Laravel API documentation generator
 
-> Badges here
+[![Latest Stable Version](https://poser.pugx.org/autaut03/laravel-api-docs-generator/version)](https://packagist.org/packages/autaut03/laravel-api-docs-generator)
+[![Dependency Status](https://www.versioneye.com/user/projects/5a47db5f0fb24f005043f898/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5a47db5f0fb24f005043f898)
+[![License](https://poser.pugx.org/autaut03/laravel-api-docs-generator/license)](https://packagist.org/packages/autaut03/laravel-api-docs-generator)
+[![Build Status](https://travis-ci.org/autaut03/laravel-api-docs-generator.svg?branch=master)](https://travis-ci.org/autaut03/laravel-api-docs-generator)
+[![codecov](https://codecov.io/gh/autaut03/laravel-api-docs-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/autaut03/laravel-api-docs-generator)
 
 # BETA VERSION
 

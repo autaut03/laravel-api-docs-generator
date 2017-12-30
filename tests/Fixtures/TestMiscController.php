@@ -19,8 +19,6 @@ class TestMiscController extends Controller
     public function automaticTitle() {}
 
     /**
-     * Hidden from docs
-     *
      * @docsHide
      */
     public function hidden() {}
