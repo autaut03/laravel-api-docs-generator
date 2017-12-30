@@ -57,7 +57,7 @@ class GenerateDocumentation extends BaseCommand
     /**
      * Process routes.
      *
-     * @return RouteWrapper[]
+     * @return array[]
      */
     private function processRoutes()
     {

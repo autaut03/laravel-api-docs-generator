@@ -19,7 +19,7 @@ class DocBlockWrapper extends DocBlock
     {
         $tags = collect($this->getTags());
 
-        if ($name == null) {
+        if ($name === null) {
             return $tags;
         }
 
@@ -37,7 +37,7 @@ class DocBlockWrapper extends DocBlock
      */
     public function getDocTag($name)
     {
-        return array_first($this->getDocTags($name));
+        return $this->getDocTags($name)->first();
     }
 
     /**

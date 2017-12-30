@@ -107,7 +107,7 @@ class RouteWrapper
      */
     public function getSignature()
     {
-        return md5($this->getUri() . ':' . implode($this->getMethods()));
+        return md5($this->getUri() . ':' . implode(',', $this->getMethods()));
     }
 
     /**
@@ -127,8 +127,7 @@ class RouteWrapper
      */
     public function getMethods()
     {
-        if (version_compare(app()->version(), '5.4', '<')) {
-            /** @noinspection PhpUndefinedMethodInspection */
+        if (method_exists($this->route, 'getMethods')) {
             $methods = $this->route->getMethods();
         } else {
             $methods = $this->route->methods();
@@ -144,8 +143,7 @@ class RouteWrapper
      */
     public function getUri()
     {
-        if (version_compare(app()->version(), '5.4', '<')) {
-            /* @noinspection PhpUndefinedMethodInspection */
+        if (method_exists($this->route, 'getUri')) {
             return $this->route->getUri();
         }
 
@@ -338,7 +336,7 @@ class RouteWrapper
             $property = (new ReflectionClass($validator))->getProperty('initialRules');
             $property->setAccessible(true);
 
-            $rules = $property->getValue();
+            $rules = $property->getValue($validator);
         } else {
             $rules = app()->call([$formRequest, 'rules']);
         }
@@ -402,7 +400,7 @@ class RouteWrapper
 
                 $parts = preg_split('/(\s+)/Su', $content, 3, PREG_SPLIT_DELIM_CAPTURE);
 
-                if (count($parts) !== 5) {
+                if (! $parts || count($parts) !== 5) {
                     throw new InvalidTagFormat(`Not enough arguments passed for {$tag->getName()}`);
                 }
 
@@ -622,7 +620,7 @@ class RouteWrapper
     {
         $parameters = $this->getMethodReflection()->getParameters();
 
-        if ($filter == null) {
+        if ($filter === null) {
             return $parameters;
         }
 
