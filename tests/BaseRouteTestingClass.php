@@ -5,7 +5,7 @@ namespace AlexWells\ApiDocsGenerator\Tests;
 use Illuminate\Routing\Route;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Contracts\Console\Kernel;
-use AlexWells\ApiDocsGenerator\RouteWrapper;
+use AlexWells\ApiDocsGenerator\Parser\RouteWrapper;
 use AlexWells\ApiDocsGenerator\PackageServiceProvider;
 
 class BaseRouteTestingClass extends TestCase
