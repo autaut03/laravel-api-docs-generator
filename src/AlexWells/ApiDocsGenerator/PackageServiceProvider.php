@@ -2,8 +2,8 @@
 
 namespace AlexWells\ApiDocsGenerator;
 
-use AlexWells\ApiDocsGenerator\Commands\GenerateDocumentation;
 use Illuminate\Support\ServiceProvider;
+use AlexWells\ApiDocsGenerator\Commands\GenerateDocumentation;
 
 class PackageServiceProvider extends ServiceProvider
 {

@@ -2,11 +2,11 @@
 
 namespace AlexWells\ApiDocsGenerator\Commands;
 
-use AlexWells\ApiDocsGenerator\Exceptions\RouteGenerationError;
-use AlexWells\ApiDocsGenerator\Postman\CollectionGenerator;
-use AlexWells\ApiDocsGenerator\RouteWrapper;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use AlexWells\ApiDocsGenerator\RouteWrapper;
+use AlexWells\ApiDocsGenerator\Postman\CollectionGenerator;
+use AlexWells\ApiDocsGenerator\Exceptions\RouteGenerationError;
 
 class GenerateDocumentation extends BaseCommand
 {
@@ -41,6 +41,7 @@ class GenerateDocumentation extends BaseCommand
 
         if (! count($this->option('masks'))) {
             $this->error('You must provide at least one route mask.');
+
             return;
         }
 
@@ -63,15 +64,15 @@ class GenerateDocumentation extends BaseCommand
         $parsedRoutes = [];
 
         foreach ($this->getRoutes() as $route) {
-            $label = '<red>['.implode(',', $route->getMethods()).'] '.$route->getUri().' at '.$route->getActionSafe().'</red>';
+            $label = '<red>[' . implode(',', $route->getMethods()) . '] ' . $route->getUri() . ' at ' . $route->getActionSafe() . '</red>';
 
             $this->overwrite("Processing route $label", 'info');
 
             if(
                 // Does this route match route mask
-                !$route->matchesAnyMask($this->option('masks')) ||
+                ! $route->matchesAnyMask($this->option('masks')) ||
                 // Is it valid
-                !$route->isSupported() ||
+                ! $route->isSupported() ||
                 // Should it be skipped
                 $route->isHiddenFromDocs()
             ) {
@@ -88,12 +89,12 @@ class GenerateDocumentation extends BaseCommand
             } catch (\Exception $exception) {
                 $this->output->writeln('');
                 $exceptionStr = $this->option('traces') ? $exception : $exception->getMessage();
-                $this->error("Failed to process: " . $exceptionStr);
+                $this->error('Failed to process: ' . $exceptionStr);
                 continue;
             }
-            $this->info("");
+            $this->info('');
         }
-        $this->info("");
+        $this->info('');
 
         return $parsedRoutes;
     }
@@ -105,7 +106,7 @@ class GenerateDocumentation extends BaseCommand
      */
     private function getRoutes()
     {
-        return array_map(function($route) {
+        return array_map(function ($route) {
             return new RouteWrapper($route, $this->options());
         }, Route::getRoutes()->get());
     }
@@ -114,6 +115,7 @@ class GenerateDocumentation extends BaseCommand
      * Writes parsed routes into everything needed (html, postman collection).
      *
      * @param  Collection $parsedRoutes
+     *
      * @return void
      */
     private function writeAll($parsedRoutes)
@@ -122,12 +124,12 @@ class GenerateDocumentation extends BaseCommand
 
         $documentation = view('api-docs::documentation', compact('parsedRoutes'));
 
-        file_put_contents($outputPath.DIRECTORY_SEPARATOR.'index.html', $documentation);
+        file_put_contents($outputPath . DIRECTORY_SEPARATOR . 'index.html', $documentation);
 
         if ($this->option('noPostmanGeneration') !== true) {
             $collection = (new CollectionGenerator($parsedRoutes))->getCollection();
 
-            file_put_contents($outputPath.DIRECTORY_SEPARATOR.'collection.json', $collection);
+            file_put_contents($outputPath . DIRECTORY_SEPARATOR . 'collection.json', $collection);
         }
     }
 }

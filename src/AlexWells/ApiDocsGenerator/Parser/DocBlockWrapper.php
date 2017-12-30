@@ -2,8 +2,8 @@
 
 namespace AlexWells\ApiDocsGenerator;
 
-use Illuminate\Support\Collection;
 use Mpociot\Reflection\DocBlock;
+use Illuminate\Support\Collection;
 use Mpociot\Reflection\DocBlock\Tag;
 
 class DocBlockWrapper extends DocBlock
@@ -45,7 +45,7 @@ class DocBlockWrapper extends DocBlock
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      */
     public function hasDocTag($name)
     {

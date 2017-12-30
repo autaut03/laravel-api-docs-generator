@@ -2,8 +2,8 @@
 
 namespace AlexWells\ApiDocsGenerator\Postman;
 
-use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Collection;
 
 class CollectionGenerator
 {
@@ -48,7 +48,7 @@ class CollectionGenerator
                                         return [
                                             'key' => $parameter['name'],
                                             'value' => '',
-                                            'type' => collect($parameter['rules'])->contains(function($rule) {
+                                            'type' => collect($parameter['rules'])->contains(function ($rule) {
                                                 return in_array($rule, ['file', 'image']);
                                                 // TODO: advanced mime checks
                                             }) ? 'file' : 'text', // this check is fine for now

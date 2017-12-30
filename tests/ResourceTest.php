@@ -3,8 +3,8 @@
 namespace AlexWells\ApiDocsGenerator\Tests;
 
 use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
-use AlexWells\ApiDocsGenerator\Tests\Fixtures\TestDefaultResourceController;
 use AlexWells\ApiDocsGenerator\Tests\Fixtures\TestResourceController;
+use AlexWells\ApiDocsGenerator\Tests\Fixtures\TestDefaultResourceController;
 
 class ResourceTest extends BaseRouteTestingClass
 {

@@ -2,19 +2,19 @@
 
 namespace AlexWells\ApiDocsGenerator\Tests;
 
-use AlexWells\ApiDocsGenerator\PackageServiceProvider;
-use AlexWells\ApiDocsGenerator\RouteWrapper;
 use Illuminate\Routing\Route;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Contracts\Console\Kernel;
+use AlexWells\ApiDocsGenerator\RouteWrapper;
 use Dingo\Api\Provider\LaravelServiceProvider;
+use AlexWells\ApiDocsGenerator\PackageServiceProvider;
 
 class BaseRouteTestingClass extends TestCase
 {
     /**
      * A variable used to always be sure that generated wrapperRoute's uri is unique.
      *
-     * @var integer
+     * @var int
      */
     protected $endpointNameCounter;
 
@@ -24,6 +24,7 @@ class BaseRouteTestingClass extends TestCase
      * @param  \Closure|array|string  $action
      * @param  array|string  $methods
      * @param  string  $uri
+     *
      * @return Route
      */
     public function createRoute($action, $methods = null, $uri = null)
@@ -37,7 +38,7 @@ class BaseRouteTestingClass extends TestCase
 
         $methods = $methods ?: 'GET';
 
-        if(!$uri) {
+        if(! $uri) {
             $uri = '/endpoint' . $this->endpointNameCounter;
             $this->endpointNameCounter++;
         }
@@ -52,6 +53,7 @@ class BaseRouteTestingClass extends TestCase
      * @param  array|string  $methods
      * @param  string  $uri
      * @param  array|null  $options
+     *
      * @return RouteWrapper
      */
     public function wrappedRoute($action, $methods = null, $uri = null, $options = null)
