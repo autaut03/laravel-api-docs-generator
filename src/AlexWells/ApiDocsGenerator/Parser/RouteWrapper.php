@@ -230,10 +230,10 @@ class RouteWrapper
      */
     public function getPathParameters()
     {
+        // Get all path parameters from path, including ? symbols after them
         preg_match_all('/\{(.*?)\}/', $this->getUri(), $matches);
-        $methodParameters = $this->getMethodReflection()->getParameters();
 
-        return array_map(function ($pathParameter) use ($methodParameters) {
+        return array_map(function ($pathParameter) {
             return (new PathParameterParser($pathParameter, !$this->options['noTypeChecks'], $this))->parse();
         }, $matches[1]);
     }

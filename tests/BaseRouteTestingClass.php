@@ -91,15 +91,6 @@ class BaseRouteTestingClass extends TestCase
         $this->endpointNameCounter = 1;
     }
 
-    public function tearDown()
-    {
-        $path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public';
-
-        if(is_dir($path)) {
-            rmdir($path);
-        }
-    }
-
     /**
      * @param \Illuminate\Foundation\Application $app
      *

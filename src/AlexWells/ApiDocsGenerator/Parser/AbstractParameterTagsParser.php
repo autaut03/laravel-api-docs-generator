@@ -62,9 +62,9 @@ abstract class AbstractParameterTagsParser
      *
      * @return mixed
      */
-    public function get($in, $name, $default = null)
+    public function get($in, $name)
     {
-        return array_get($this->all(), "$in.$name", $default);
+        return array_get($this->all(), "$in.$name");
     }
 
     /**

@@ -122,6 +122,10 @@ class GenerateDocumentation extends BaseCommand
     {
         $outputPath = $this->option('output');
 
+        if(! is_dir($outputPath)) {
+            mkdir($outputPath, 0777, true);
+        }
+
         $documentation = view('api-docs::documentation', compact('parsedRoutes'));
 
         file_put_contents($outputPath . DIRECTORY_SEPARATOR . 'index.html', $documentation);

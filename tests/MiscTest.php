@@ -14,6 +14,13 @@ class MiscTest extends BaseRouteTestingClass
         $this->assertEquals('You must provide at least one route mask.' . PHP_EOL, $output);
     }
 
+    public function testConsoleCommandWorks()
+    {
+        $output = $this->artisan('api-docs:generate', ['--masks' => ['*']]);
+
+        $this->assertFileExists('public/docs/index.html');
+    }
+
     public function testThatItDoesNotWorkWithClosure()
     {
         $this->expectException(ClosureRouteException::class);
