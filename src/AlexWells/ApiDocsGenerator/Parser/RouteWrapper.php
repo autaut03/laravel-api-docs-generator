@@ -55,16 +55,18 @@ class RouteWrapper
     protected $methodDocBlock;
 
     /**
-     * Parsed parameter descriptions.
+     * Parsed describe tag parser.
      *
-     * @var array
+     * @var DescribeParameterTagsParser
      */
-    protected $parameterDescriptions;
+    protected $describeTagsParser;
 
     /**
-     * Parameter types.
+     * Parsed default tag parser.
+     *
+     * @var DefaultParameterTagsParser
      */
-    protected const PARAMETER_TYPES = ['query', 'path'];
+    protected $defaultTagsParser;
 
     /**
      * RouteWrapper constructor.
@@ -76,6 +78,16 @@ class RouteWrapper
     {
         $this->route = $route;
         $this->options = $options;
+    }
+
+    /**
+     * Returns original (laravel's) route object.
+     *
+     * @return Route
+     */
+    public function getOriginalRoute()
+    {
+        return $this->route;
     }
 
     /**
@@ -222,53 +234,7 @@ class RouteWrapper
         $methodParameters = $this->getMethodReflection()->getParameters();
 
         return array_map(function ($pathParameter) use ($methodParameters) {
-            $name = trim($pathParameter, '?');
-            /** @var ReflectionParameter $methodParameter */
-            $methodParameter = array_first($methodParameters, function (ReflectionParameter $methodParameter) use ($name) {
-                return strtolower($methodParameter->getName()) === strtolower($name);
-            });
-
-            $type = null;
-            $default = null;
-            $description = $this->getParameterDescription('path', $name);
-
-            if ($methodParameter) {
-                $parameterType = $methodParameter->getType();
-                if (! $parameterType && ! $this->options['noTypeChecks']) {
-                    throw new NoTypeSpecifiedException("No type specified for parameter `$name`");
-                }
-
-                if ($parameterType) {
-                    if ($parameterType->isBuiltin()) {
-                        $type = strval($parameterType);
-                    } elseif ($parameterClass = $methodParameter->getClass()) {
-                        $type = $parameterClass->getShortName();
-
-                        if ($parameterClass->isSubclassOf(Model::class)) {
-                            if (empty($description)) {
-                                $description = "`$type` id";
-                            }
-                            $type = 'model_id';
-                        }
-                    }
-                }
-
-                if ($methodParameter->isOptional()) {
-                    $default = $methodParameter->getDefaultValue();
-                }
-            }
-
-            $regex = $this->route->wheres[$name] ?? null;
-
-            // TODO remake
-            return [
-                'name' => $name,
-                'required' => ($name === $pathParameter), // trimmed nothing
-                'type' => $type,
-                'default' => $default,
-                'regex' => $regex,
-                'description' => $description
-            ];
+            return (new PathParameterParser($pathParameter, !$this->options['noTypeChecks'], $this))->parse();
         }, $matches[1]);
     }
 
@@ -284,9 +250,9 @@ class RouteWrapper
         foreach ($this->getQueryValidationRules() as $name => $rules) {
             $params[] = [
                 'name' => $name,
-                'default' => '', // TODO: parse defaults from tag @default
+                'default' => $this->getDefaultTagsParser()->get('query', $name),
                 'rules' => $rules,
-                'description' => $this->getParameterDescription('query', $name)
+                'description' => $this->getDescribeTagsParser()->get('query', $name)
             ];
         }
 
@@ -354,70 +320,6 @@ class RouteWrapper
         }, $rules);
 
         return $rules;
-    }
-
-    /**
-     * Returns parameter description.
-     *
-     * @param $in
-     * @param $name
-     *
-     * @return string
-     */
-    public function getParameterDescription($in, $name)
-    {
-        return array_get($this->getParameterDescriptions(), "$in.$name", '');
-    }
-
-    /**
-     * Returns parameter descriptions.
-     *
-     * @return array
-     */
-    public function getParameterDescriptions()
-    {
-        if (! $this->parameterDescriptions) {
-            return $this->parameterDescriptions = $this->parseParameterDescriptions();
-        }
-
-        return $this->parameterDescriptions;
-    }
-
-    /**
-     * Parses parameter descriptions.
-     *
-     * @throws InvalidTagFormat
-     *
-     * @return array
-     */
-    protected function parseParameterDescriptions()
-    {
-        $descriptions = [];
-
-        foreach ($this->getDocBlocks() as $docBlock) {
-            foreach ($docBlock->getDocTags('describe') as $tag) {
-                $content = $tag->getContent();
-
-                $parts = preg_split('/(\s+)/Su', $content, 3, PREG_SPLIT_DELIM_CAPTURE);
-
-                if (! $parts || count($parts) !== 5) {
-                    throw new InvalidTagFormat(`Not enough arguments passed for {$tag->getName()}`);
-                }
-
-                $in = $parts[0];
-
-                if (! in_array($in, self::PARAMETER_TYPES)) {
-                    throw new InvalidTagFormat(`Invalid parameter location specified for {$tag->getName()}`);
-                }
-
-                $name = $parts[2];
-                $description = $parts[4];
-
-                $descriptions[$in][$name] = $description;
-            }
-        }
-
-        return $descriptions;
     }
 
     /**
@@ -534,13 +436,51 @@ class RouteWrapper
     }
 
     /**
+     * Returns describe tags parser.
+     *
+     * @return DescribeParameterTagsParser
+     */
+    public function getDescribeTagsParser()
+    {
+        if (! $this->describeTagsParser) {
+            return $this->describeTagsParser = new DescribeParameterTagsParser($this->getDocBlocksArray());
+        }
+
+        return $this->describeTagsParser;
+    }
+
+    /**
+     * Returns default tags parser.
+     *
+     * @return DefaultParameterTagsParser
+     */
+    public function getDefaultTagsParser()
+    {
+        if (! $this->defaultTagsParser) {
+            return $this->defaultTagsParser = new DefaultParameterTagsParser($this->getDocBlocksArray());
+        }
+
+        return $this->defaultTagsParser;
+    }
+
+    /**
      * Get all doc blocks.
      *
      * @return Collection|DocBlockWrapper[]
      */
     protected function getDocBlocks()
     {
-        return collect([$this->getMethodDocBlock(), $this->getControllerDocBlock()]);
+        return collect($this->getDocBlocksArray());
+    }
+
+    /**
+     * Get all doc blocks as array.
+     *
+     * @return DocBlockWrapper[]
+     */
+    protected function getDocBlocksArray()
+    {
+        return [$this->getMethodDocBlock(), $this->getControllerDocBlock()];
     }
 
     /**
@@ -579,7 +519,7 @@ class RouteWrapper
     protected function getFormRequestClassReflection()
     {
         if (! $this->parsedFormRequest) {
-            $methodParameter = $this->getMethodParameter(FormRequest::class);
+            $methodParameter = $this->getMethodParameterByType(FormRequest::class);
 
             if (! $methodParameter) {
                 return null;
@@ -598,9 +538,9 @@ class RouteWrapper
      *
      * @return ReflectionParameter
      */
-    protected function getMethodParameter($filter = null)
+    protected function getMethodParameterByType($filter)
     {
-        $formRequestParameters = $this->getMethodParameters($filter);
+        $formRequestParameters = $this->getMethodParametersByType($filter);
 
         if (empty($formRequestParameters)) {
             return null;
@@ -612,19 +552,13 @@ class RouteWrapper
     /**
      * Returns route method's parameters filtered by type.
      *
-     * @param string $filter a parameter type to filter
+     * @param string $filter A parameter type to filter
      *
      * @return ReflectionParameter[]
      */
-    protected function getMethodParameters($filter = null)
+    protected function getMethodParametersByType($filter)
     {
-        $parameters = $this->getMethodReflection()->getParameters();
-
-        if ($filter === null) {
-            return $parameters;
-        }
-
-        return array_filter($parameters, function (ReflectionParameter $parameter) use ($filter) {
+        return $this->getMethodParameters(function (ReflectionParameter $parameter) use ($filter) {
             if (! ($type = $parameter->getType())) {
                 return false;
             }
@@ -635,6 +569,52 @@ class RouteWrapper
 
             return ($class = $parameter->getClass()) && $class->isSubclassOf($filter);
         });
+    }
+
+    /**
+     * Returns route method's parameters filtered by name (ignore case).
+     *
+     * TODO: get reflections into other class
+     *
+     * @param string $name
+     *
+     * @return ReflectionParameter
+     */
+    public function getMethodParameterByName($name)
+    {
+        return $this->getMethodParameter(function (ReflectionParameter $parameter) use ($name) {
+            return strtolower($parameter->getName()) === strtolower($name);
+        });
+    }
+
+    /**
+     * Returns route method's parameter filtered by callable.
+     *
+     * @param callable $filter A callable returning bool
+     *
+     * @return ReflectionParameter
+     */
+    protected function getMethodParameter(callable $filter)
+    {
+        return array_first($this->getMethodParameters($filter));
+    }
+
+    /**
+     * Returns route method's parameters filtered by callable.
+     *
+     * @param callable $filter A callable returning bool
+     *
+     * @return ReflectionParameter[]
+     */
+    protected function getMethodParameters(callable $filter = null)
+    {
+        $parameters = $this->getMethodReflection()->getParameters();
+
+        if ($filter === null) {
+            return $parameters;
+        }
+
+        return array_filter($parameters, $filter);
     }
 
     /**

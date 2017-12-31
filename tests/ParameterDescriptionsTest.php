@@ -9,20 +9,16 @@ class ParameterDescriptionsTest extends BaseRouteTestingClass
 {
     public function testThatDescriptionsAreParsedCorrectly()
     {
-        $route = $this->wrappedRoute(
-            TestParameterDescriptionsController::class . '@described',
-            null,
-            '/endpoint/{id}'
-        );
+        $parser = $this->wrappedRoute(TestParameterDescriptionsController::class . '@described')->getDescribeTagsParser();
 
-        $this->assertEquals('It\'s an ID of your model', $route->getParameterDescription('path', 'id'));
-        $this->assertEquals('Week day number', $route->getParameterDescription('query', 'weekDay'));
+        $this->assertEquals('It\'s an ID of your model', $parser->get('path', 'id'));
+        $this->assertEquals('Week day number', $parser->get('query', 'weekDay'));
     }
 
     public function testThatInvalidTagFormatExceptionIsThrown()
     {
         $this->expectException(InvalidTagFormat::class);
 
-        $this->wrappedRoute(TestParameterDescriptionsController::class . '@invalidDescribed')->getParameterDescriptions();
+        $this->wrappedRoute(TestParameterDescriptionsController::class . '@invalid')->getDescribeTagsParser()->all();
     }
 }

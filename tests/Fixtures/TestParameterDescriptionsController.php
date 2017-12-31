@@ -13,5 +13,5 @@ class TestParameterDescriptionsController
     /**
      * @describe year path A year number
      */
-    public function invalidDescribed() {}
+    public function invalid() {}
 }

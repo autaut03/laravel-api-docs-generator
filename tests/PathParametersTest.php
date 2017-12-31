@@ -55,6 +55,7 @@ class PathParametersTest extends BaseRouteTestingClass
         )->getPathParameters();
 
         $this->assertEquals('model_id', $parameters[0]['type']);
+        //$this->assertEquals('`SimpleEloquentModel` id', $parameters[0]['description']);
     }
 
     public function testThatRequiredAttributeIsParsedCorrectly()
@@ -76,7 +77,18 @@ class PathParametersTest extends BaseRouteTestingClass
             '/endpoint/{id?}'
         )->getPathParameters();
 
-        $this->assertEquals(123, $parameters[0]['default']);
+        $this->assertEquals('123', $parameters[0]['default']);
+    }
+
+    public function testThatOverwrittenDefaultAttributeIsParsedCorrectly()
+    {
+        $parameters = $this->wrappedRoute(
+            TestPathParametersController::class . '@overwrittenDefaultValue',
+            null,
+            '/endpoint/{id?}'
+        )->getPathParameters();
+
+        $this->assertEquals('789', $parameters[0]['default']);
     }
 
     public function testThatOrderOfArgumentsIsNotNecessary()

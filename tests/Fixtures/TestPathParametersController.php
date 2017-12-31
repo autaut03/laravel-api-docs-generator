@@ -17,4 +17,9 @@ class TestPathParametersController extends Controller
     public function noTypeSpecified($id) {}
 
     public function withDefaultValue($id = 123) {}
+
+    /**
+     * @default path id 789
+     */
+    public function overwrittenDefaultValue($id = 123) {}
 }
