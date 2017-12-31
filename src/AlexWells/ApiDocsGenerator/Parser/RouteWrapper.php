@@ -387,36 +387,7 @@ class RouteWrapper
         return $this->getMethodDocBlock()
             ->getDocTags('response')
             ->map(function (Tag $tag) {
-                $content = $tag->getContent();
-                $content = Helpers::clearNewlines($content);
-
-                if(! $content) {
-                    return null;
-                }
-
-                // TODO: extract into a class and each "replace" into method like `replaceWhat`
-
-                $cutOffInQuotes = "\s*(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
-
-                // TODO: allow to use single quotes (and replace them automatically)
-                // replace `int[]` with `[ :: int ]`
-                $content = preg_replace("/(\w+)\[\]$cutOffInQuotes/", '[ :: $1 ]', $content);
-                // replace `nested: {}` with `"nested": {}`
-                $content = preg_replace("/(\w+)\s*:[^:]$cutOffInQuotes/", '"$1": ', $content);
-                // replace `year :: int` with `"year": {"$ref": "int"}`
-                $content = preg_replace("/(\w+)\s*::\s*(\w+)$cutOffInQuotes/", '"$1": {"$ref": "$2"}', $content);
-                // replace `:: int` with `{"$ref": "int"}`
-                $content = preg_replace("/\s*::\s*(\w+)$cutOffInQuotes/", '{"$ref": "$1"}', $content);
-                // replace `:: {}` with `{"$ref": {}}`
-                $content = preg_replace("/::\s*{(.*)}$cutOffInQuotes/", '{"$ref": {$1}}', $content);
-
-                $content = json_decode($content, true);
-
-                if(! $content) {
-                    throw new InvalidTagFormat('Response tag format is invalid, JSON decode error: ' . json_last_error_msg());
-                }
-
-                return $content;
+                return (new ResponseParser($tag->getContent()))->parse();
             })
             ->filter()
             ->toArray();

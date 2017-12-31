@@ -121,7 +121,7 @@ abstract class AbstractParameterTagsParser
 
         $in = $parts[0];
 
-        if (! in_array($in, self::PARAMETER_TYPES)) {
+        if (! in_array($in, static::PARAMETER_TYPES)) {
             throw new InvalidTagFormat(`Invalid parameter location specified for {$tag->getName()}`);
         }
 

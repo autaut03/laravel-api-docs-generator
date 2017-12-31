@@ -73,4 +73,18 @@ class Helpers
             return str_replace($match[1], strtolower($match[1]), $match[0]);
         }, $string);
     }
+
+    /**
+     * Wraps provided regex pattern so it does not work inside double quote pairs (works between them).
+     *
+     * Note: delimiters are also returned.
+     *
+     * @param string $regex
+     *
+     * @return string
+     */
+    public static function regexExcludeInQuotes($regex)
+    {
+        return '/' . $regex . '\s*(?=([^"]*"[^"]*")*[^"]*$)' . '/';
+    }
 }
