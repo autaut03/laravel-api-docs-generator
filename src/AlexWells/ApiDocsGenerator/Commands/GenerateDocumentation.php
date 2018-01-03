@@ -2,11 +2,11 @@
 
 namespace AlexWells\ApiDocsGenerator\Commands;
 
+use AlexWells\ApiDocsGenerator\Exceptions\RouteGenerationError;
+use AlexWells\ApiDocsGenerator\Parsers\RouteWrapper;
+use AlexWells\ApiDocsGenerator\Postman\CollectionGenerator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use AlexWells\ApiDocsGenerator\Parser\RouteWrapper;
-use AlexWells\ApiDocsGenerator\Postman\CollectionGenerator;
-use AlexWells\ApiDocsGenerator\Exceptions\RouteGenerationError;
 
 class GenerateDocumentation extends BaseCommand
 {

@@ -1,21 +1,19 @@
 <?php
 
-namespace AlexWells\ApiDocsGenerator\Parser;
+namespace AlexWells\ApiDocsGenerator\Parsers;
 
+use AlexWells\ApiDocsGenerator\Exceptions\ClosureRouteException;
+use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 use AlexWells\ApiDocsGenerator\Helpers;
-use ReflectionClass;
-use ReflectionParameter;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;
-use ReflectionFunctionAbstract;
 use Illuminate\Support\Collection;
 use Mpociot\Reflection\DocBlock\Tag;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
-use AlexWells\ApiDocsGenerator\Exceptions\ClosureRouteException;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use AlexWells\ApiDocsGenerator\Exceptions\NoTypeSpecifiedException;
+use ReflectionClass;
+use ReflectionFunctionAbstract;
+use ReflectionParameter;
 
 class RouteWrapper
 {
@@ -266,60 +264,12 @@ class RouteWrapper
      */
     protected function getQueryValidationRules()
     {
-        if (! ($formRequestReflection = $this->getFormRequestClassReflection())) {
+        if (! ($reflection = $this->getFormRequestClassReflection())) {
             return [];
         }
 
-        $className = $formRequestReflection->getName();
-
-        /*
-         * TODO: REFACTOR BEGIN
-         */
-        $container = app();
-        $containerReflection = new ReflectionClass($container);
-
-        $property = $containerReflection->getProperty('afterResolvingCallbacks');
-        $property->setAccessible(true);
-        $originalValue = $property->getValue($container);
-
-        $modified = $property->getValue($container);
-        $modified[ValidatesWhenResolved::class] = [];
-
-        $property->setValue($container, $modified);
-
-        /** @var FormRequest $formRequest */
-        $formRequest = $containerReflection->getMethod('make')->invoke($container, $className);
-
-        $property->setValue($container, $originalValue);
-        /*
-         * TODO: REFACTOR END
-         */
-
-        if ($formRequestReflection->hasMethod('validator')) {
-            $factory = app()->make(ValidationFactory::class);
-            $validator = app()->call([$formRequest, 'validator'], [$factory]);
-
-            $property = (new ReflectionClass($validator))->getProperty('initialRules');
-            $property->setAccessible(true);
-
-            $rules = $property->getValue($validator);
-        } else {
-            $rules = app()->call([$formRequest, 'rules']);
-        }
-
-        $rules = array_map(function ($rule) {
-            if (is_string($rule)) {
-                return explode('|', $rule);
-            } elseif (is_object($rule)) {
-                return [strval($rule)];
-            } else {
-                return array_map(function ($rule) {
-                    return is_object($rule) ? strval($rule) : $rule;
-                }, $rule);
-            }
-        }, $rules);
-
-        return $rules;
+        return FormRequestRulesParser::withReflection($reflection)
+            ->parse();
     }
 
     /**

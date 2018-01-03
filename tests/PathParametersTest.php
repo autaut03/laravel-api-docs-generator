@@ -2,8 +2,8 @@
 
 namespace AlexWells\ApiDocsGenerator\Tests;
 
-use AlexWells\ApiDocsGenerator\Parser\RouteWrapper;
 use AlexWells\ApiDocsGenerator\Exceptions\NoTypeSpecifiedException;
+use AlexWells\ApiDocsGenerator\Parsers\RouteWrapper;
 use AlexWells\ApiDocsGenerator\Tests\Fixtures\TestPathParametersController;
 
 class PathParametersTest extends BaseRouteTestingClass

@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexWells\ApiDocsGenerator\Parser;
+namespace AlexWells\ApiDocsGenerator\Parsers;
 
 use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 use AlexWells\ApiDocsGenerator\Helpers;
@@ -71,7 +71,7 @@ class ResponseParser
      * Replace `int[]` with `[ :: int ]`
      *
      * @param $content
-     * @return mixed
+     * @return string|null
      */
     protected static function transformShortArray($content)
     {
@@ -82,7 +82,7 @@ class ResponseParser
      * Replace `nested: {}` with `"nested": {}`
      *
      * @param $content
-     * @return mixed
+     * @return string|null
      */
     protected static function transformKeyNames($content)
     {
@@ -93,7 +93,7 @@ class ResponseParser
      * Replace `year :: int` with `"year": {"$ref": "int"}`
      *
      * @param $content
-     * @return mixed
+     * @return string|null
      */
     protected static function transformVarsOfType($content)
     {
@@ -104,7 +104,7 @@ class ResponseParser
      * Replace `:: int` with `{"$ref": "int"}`
      *
      * @param $content
-     * @return mixed
+     * @return string|null
      */
     protected static function transformTypes($content)
     {
@@ -115,7 +115,7 @@ class ResponseParser
      * Replace `:: {}` with `{"$ref": {}}`
      *
      * @param $content
-     * @return mixed
+     * @return string|null
      */
     protected static function transformRepeatedObject($content)
     {
@@ -127,7 +127,7 @@ class ResponseParser
      *
      * @param $content
      *
-     * @return array
+     * @return array|null
      */
     protected static function transformDecode($content)
     {

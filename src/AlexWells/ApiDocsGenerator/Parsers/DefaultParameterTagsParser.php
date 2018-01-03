@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexWells\ApiDocsGenerator\Parser;
+namespace AlexWells\ApiDocsGenerator\Parsers;
 
 class DefaultParameterTagsParser extends AbstractParameterTagsParser
 {

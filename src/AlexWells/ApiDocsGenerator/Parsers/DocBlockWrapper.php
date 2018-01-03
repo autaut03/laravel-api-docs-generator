@@ -1,9 +1,9 @@
 <?php
 
-namespace AlexWells\ApiDocsGenerator\Parser;
+namespace AlexWells\ApiDocsGenerator\Parsers;
 
-use Mpociot\Reflection\DocBlock;
 use Illuminate\Support\Collection;
+use Mpociot\Reflection\DocBlock;
 use Mpociot\Reflection\DocBlock\Tag;
 
 class DocBlockWrapper extends DocBlock

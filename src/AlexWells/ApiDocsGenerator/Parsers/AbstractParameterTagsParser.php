@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexWells\ApiDocsGenerator\Parser;
+namespace AlexWells\ApiDocsGenerator\Parsers;
 
 use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 use Mpociot\Reflection\DocBlock\Tag;
