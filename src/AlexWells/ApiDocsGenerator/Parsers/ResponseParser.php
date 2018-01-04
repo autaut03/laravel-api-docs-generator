@@ -2,8 +2,8 @@
 
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 use AlexWells\ApiDocsGenerator\Helpers;
+use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 
 class ResponseParser
 {
@@ -24,7 +24,7 @@ class ResponseParser
     /**
      * ResponseParser constructor.
      *
-     * @param string $content Content to be parsed.
+     * @param string $content content to be parsed
      */
     public function __construct(string $content)
     {
@@ -34,8 +34,9 @@ class ResponseParser
     /**
      * Parse the content.
      *
-     * @return array
      * @throws InvalidTagFormat
+     *
+     * @return array
      */
     public function parse()
     {
@@ -60,6 +61,7 @@ class ResponseParser
      * Replace \n and similar symbols with nothing.
      *
      * @param $content
+     *
      * @return string
      */
     protected static function transformNewlines($content)
@@ -68,9 +70,10 @@ class ResponseParser
     }
 
     /**
-     * Replace `int[]` with `[ :: int ]`
+     * Replace `int[]` with `[ :: int ]`.
      *
      * @param $content
+     *
      * @return string|null
      */
     protected static function transformShortArray($content)
@@ -79,9 +82,10 @@ class ResponseParser
     }
 
     /**
-     * Replace `nested: {}` with `"nested": {}`
+     * Replace `nested: {}` with `"nested": {}`.
      *
      * @param $content
+     *
      * @return string|null
      */
     protected static function transformKeyNames($content)
@@ -90,9 +94,10 @@ class ResponseParser
     }
 
     /**
-     * Replace `year :: int` with `"year": {"$ref": "int"}`
+     * Replace `year :: int` with `"year": {"$ref": "int"}`.
      *
      * @param $content
+     *
      * @return string|null
      */
     protected static function transformVarsOfType($content)
@@ -101,9 +106,10 @@ class ResponseParser
     }
 
     /**
-     * Replace `:: int` with `{"$ref": "int"}`
+     * Replace `:: int` with `{"$ref": "int"}`.
      *
      * @param $content
+     *
      * @return string|null
      */
     protected static function transformTypes($content)
@@ -112,9 +118,10 @@ class ResponseParser
     }
 
     /**
-     * Replace `:: {}` with `{"$ref": {}}`
+     * Replace `:: {}` with `{"$ref": {}}`.
      *
      * @param $content
+     *
      * @return string|null
      */
     protected static function transformRepeatedObject($content)

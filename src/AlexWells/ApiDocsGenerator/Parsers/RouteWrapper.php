@@ -2,18 +2,16 @@
 
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
-use AlexWells\ApiDocsGenerator\Exceptions\ClosureRouteException;
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
-use AlexWells\ApiDocsGenerator\Helpers;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use Illuminate\Foundation\Http\FormRequest;
+use ReflectionClass;
+use ReflectionParameter;
 use Illuminate\Routing\Route;
+use ReflectionFunctionAbstract;
 use Illuminate\Support\Collection;
 use Mpociot\Reflection\DocBlock\Tag;
-use ReflectionClass;
-use ReflectionFunctionAbstract;
-use ReflectionParameter;
+use AlexWells\ApiDocsGenerator\Helpers;
+use Illuminate\Foundation\Http\FormRequest;
+use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
+use AlexWells\ApiDocsGenerator\Exceptions\ClosureRouteException;
 
 class RouteWrapper
 {
@@ -232,7 +230,7 @@ class RouteWrapper
         preg_match_all('/\{(.*?)\}/', $this->getUri(), $matches);
 
         return array_map(function ($pathParameter) {
-            return (new PathParameterParser($pathParameter, !$this->options['noTypeChecks'], $this))->parse();
+            return (new PathParameterParser($pathParameter, ! $this->options['noTypeChecks'], $this))->parse();
         }, $matches[1]);
     }
 

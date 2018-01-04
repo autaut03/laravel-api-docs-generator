@@ -2,9 +2,9 @@
 
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
-use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use Illuminate\Foundation\Http\FormRequest;
 use ReflectionClass;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 class FormRequestRulesParser
@@ -34,6 +34,7 @@ class FormRequestRulesParser
      * Set FormRequest class name.
      *
      * @param string $className
+     *
      * @return $this
      */
     public function setClassName(string $className)
@@ -47,6 +48,7 @@ class FormRequestRulesParser
      * Set reflection class.
      *
      * @param ReflectionClass $reflection
+     *
      * @return $this
      */
     public function setReflection(ReflectionClass $reflection)
@@ -60,6 +62,7 @@ class FormRequestRulesParser
      * Set FormRequest class instance.
      *
      * @param FormRequest $instance
+     *
      * @return $this
      */
     public function setFormRequestInstance(FormRequest $instance)
@@ -73,6 +76,7 @@ class FormRequestRulesParser
      * Create instance from ReflectionClass.
      *
      * @param ReflectionClass $reflection
+     *
      * @return $this
      */
     public static function withReflection(ReflectionClass $reflection)
@@ -86,6 +90,7 @@ class FormRequestRulesParser
      * Create instance from class name.
      *
      * @param string $className
+     *
      * @return $this
      */
     public static function withClassName(string $className)
@@ -99,6 +104,7 @@ class FormRequestRulesParser
      * Create instance from FormRequest instance.
      *
      * @param FormRequest $instance
+     *
      * @return $this
      */
     public static function withInstance(FormRequest $instance)
