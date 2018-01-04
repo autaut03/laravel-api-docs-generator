@@ -2,8 +2,8 @@
 
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
-use Illuminate\Support\Collection;
 use Mpociot\Reflection\DocBlock;
+use Illuminate\Support\Collection;
 use Mpociot\Reflection\DocBlock\Tag;
 
 class DocBlockWrapper extends DocBlock

@@ -2,8 +2,8 @@
 
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 use Mpociot\Reflection\DocBlock\Tag;
+use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 
 abstract class AbstractParameterTagsParser
 {
@@ -52,7 +52,6 @@ abstract class AbstractParameterTagsParser
     {
         return $description;
     }
-
 
     /**
      * Returns description.
@@ -105,6 +104,7 @@ abstract class AbstractParameterTagsParser
      * Parse single tag.
      *
      * @param Tag $tag
+     *
      * @throws InvalidTagFormat
      *
      * @return array

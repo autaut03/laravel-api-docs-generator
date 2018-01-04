@@ -2,9 +2,9 @@
 
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
-use AlexWells\ApiDocsGenerator\Exceptions\NoTypeSpecifiedException;
-use Illuminate\Database\Eloquent\Model;
 use ReflectionParameter;
+use Illuminate\Database\Eloquent\Model;
+use AlexWells\ApiDocsGenerator\Exceptions\NoTypeSpecifiedException;
 
 class PathParameterParser
 {
@@ -38,6 +38,7 @@ class PathParameterParser
 
     /**
      * PathParameterParser constructor.
+     *
      * @param RouteWrapper $route
      */
     public function __construct($name, $typeChecksEnabled, RouteWrapper $route)
@@ -48,7 +49,7 @@ class PathParameterParser
     }
 
     /**
-     * Parse parameter
+     * Parse parameter.
      *
      * @return array
      */
@@ -81,8 +82,10 @@ class PathParameterParser
 
     /**
      * Returns parameter's type.
-     * @return string
+     *
      * @throws NoTypeSpecifiedException
+     *
+     * @return string
      */
     public function getType()
     {
@@ -92,7 +95,7 @@ class PathParameterParser
 
         if(! ($parameterType = $reflection->getType())) {
             if($this->typeChecksEnabled) {
-                throw new NoTypeSpecifiedException("No type specified for parameter " . $this->getName());
+                throw new NoTypeSpecifiedException('No type specified for parameter ' . $this->getName());
             }
 
             return null;
@@ -127,7 +130,7 @@ class PathParameterParser
     {
         $default = $this->route->getDefaultTagsParser()->get('path', $this->getName());
 
-        if(!is_null($default)) {
+        if(! is_null($default)) {
             return $default;
         }
 
