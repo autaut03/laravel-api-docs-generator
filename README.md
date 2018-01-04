@@ -1,15 +1,18 @@
-## Laravel API documentation generator
+## [WIP] Laravel API documentation generator
 
-[![Latest Stable Version](https://poser.pugx.org/autaut03/laravel-api-docs-generator/version)](https://packagist.org/packages/autaut03/laravel-api-docs-generator)
-[![Build Status](https://travis-ci.org/autaut03/laravel-api-docs-generator.svg?branch=master)](https://travis-ci.org/autaut03/laravel-api-docs-generator)
+[![Latest Stable Version](https://img.shields.io/packagist/v/autaut03/laravel-api-docs-generator.svg?style=flat-square)](https://packagist.org/packages/autaut03/laravel-api-docs-generator)
+[![Downloads](https://img.shields.io/packagist/dt/autaut03/laravel-api-docs-generator.svg?style=flat-square)](https://packagist.org/packages/autaut03/laravel-api-docs-generator)
+[![Travis Build](https://img.shields.io/travis/autaut03/laravel-api-docs-generator.svg?style=flat-square)](https://travis-ci.org/autaut03/laravel-api-docs-generator)
 [![StyleCI](https://styleci.io/repos/115812998/shield)](https://styleci.io/repos/115812998)
 [![PHP Eye](http://php-eye.com/badge/autaut03/laravel-api-docs-generator/tested.svg?style=flat-square)](https://php-eye.com/package/autaut03/laravel-api-docs-generator)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/autaut03/laravel-api-docs-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/autaut03/laravel-api-docs-generator/?branch=master)
-[![codecov](https://codecov.io/gh/autaut03/laravel-api-docs-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/autaut03/laravel-api-docs-generator)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/autaut03/laravel-api-docs-generator.svg?style=flat-square)](https://scrutinizer-ci.com/g/autaut03/laravel-api-docs-generator/?branch=master)
+[![codecov](https://img.shields.io/codecov/c/github/autaut03/laravel-api-docs-generator.svg?style=flat-square)](https://codecov.io/gh/autaut03/laravel-api-docs-generator)
 [![Dependency Status](https://www.versioneye.com/user/projects/5a47db5f0fb24f005043f898/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5a47db5f0fb24f005043f898)
-[![License](https://poser.pugx.org/autaut03/laravel-api-docs-generator/license)](https://packagist.org/packages/autaut03/laravel-api-docs-generator)
+[![License](https://img.shields.io/packagist/l/autaut03/laravel-api-docs-generator.svg?style=flat-square)](https://packagist.org/packages/autaut03/laravel-api-docs-generator)
 
 # BETA VERSION
+
+NO HTML GENERATION AVAILABLE YET.
 
 Automatically generate your API documentation from your existing Laravel routes. No example available for now.
 
