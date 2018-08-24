@@ -15,9 +15,10 @@ class StringToArrayParser extends AbstractStepTransformer
     }
 
     /**
-     * Replace `string with "quotes" inside` with `"string with \"quotes\" inside"`
+     * Replace `string with "quotes" inside` with `"string with \"quotes\" inside"`.
      *
      * @param string $string
+     *
      * @return string
      */
     protected static function transformWrapInQuotes(string $content) {
@@ -33,9 +34,10 @@ class StringToArrayParser extends AbstractStepTransformer
     }
 
     /**
-     * Replace `"string", "another"` with `["string", "another"]`
+     * Replace `"string", "another"` with `["string", "another"]`.
      *
      * @param string $content
+     *
      * @return string
      */
     protected static function transformWrapInArrayBrackets(string $content) {

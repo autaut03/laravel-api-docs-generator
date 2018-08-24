@@ -3,7 +3,6 @@
 namespace AlexWells\ApiDocsGenerator\Tests;
 
 use AlexWells\ApiDocsGenerator\Exceptions\InvalidFormat;
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 use AlexWells\ApiDocsGenerator\Tests\Fixtures\TestResponseController;
 
 class ResponseTest extends BaseRouteTestingClass
