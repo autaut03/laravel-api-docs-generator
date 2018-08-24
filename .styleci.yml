@@ -16,5 +16,3 @@ disabled:
 finder:
   exclude:
     - "tests/Fixtures"
-
-linting: true
