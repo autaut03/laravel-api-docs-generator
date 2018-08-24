@@ -2,6 +2,7 @@
 
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
+use AlexWells\ApiDocsGenerator\Exceptions\InvalidFormat;
 use ReflectionClass;
 use ReflectionParameter;
 use Illuminate\Routing\Route;
@@ -95,7 +96,7 @@ class RouteWrapper
     {
         return [
             'id' => $this->getSignature(),
-            'resource' => $this->getResourceName(),
+            'resource' => $this->getResource(),
             'uri' => $this->getUri(),
             'methods' => $this->getMethods(),
             'title' => $this->getTitle(),
@@ -299,11 +300,11 @@ class RouteWrapper
     }
 
     /**
-     * Returns route's resource name.
+     * Returns route's resource.
      *
-     * @return string
+     * @return array
      */
-    public function getResourceName()
+    public function getResource()
     {
         return $this->getDocBlocks()
             ->map(function (DocBlockWrapper $docBlock) {
@@ -316,13 +317,15 @@ class RouteWrapper
                 $resource = $tag->getContent();
 
                 if(! $resource) {
-                    throw new InvalidTagFormat('Resource name not specified');
+                    throw new InvalidFormat('Resource name not specified');
                 }
+
+                $resource = (new StringToArrayParser($resource))->parse();
 
                 return $resource;
             })
             ->filter()
-            ->first(null, 'Unclassified routes');
+            ->first(null, ['Unclassified routes']);
     }
 
     /**

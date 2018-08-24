@@ -9,12 +9,17 @@ use Illuminate\Routing\Controller;
  */
 class TestResourceController extends Controller
 {
-    public function hasResource() {}
+    public function has() {}
 
     /**
      * @resource Overwritten resource
      */
-    public function overwriteResource() {}
+    public function overwritten() {}
+
+    /**
+     * @resource "General", "Sub-category", "Last one"
+     */
+    public function nested() {}
 
     /**
      * @resource

@@ -5,56 +5,16 @@ namespace AlexWells\ApiDocsGenerator\Parsers;
 use AlexWells\ApiDocsGenerator\Helpers;
 use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 
-class ResponseParser
+class ResponseParser extends AbstractStepTransformer
 {
     /**
      * Steps that should be taken to transform the string from raw to end result.
      *
-     * @var array
-     */
-    protected const TRANSFORM_STEPS = ['newlines', 'shortArray', 'keyNames', 'varsOfType', 'types', 'repeatedObject', 'decode'];
-
-    /**
-     * Content to be parsed.
-     *
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * ResponseParser constructor.
-     *
-     * @param string $content content to be parsed
-     */
-    public function __construct(string $content)
-    {
-        $this->content = $content;
-    }
-
-    /**
-     * Parse the content.
-     *
-     * @throws InvalidTagFormat
-     *
      * @return array
      */
-    public function parse()
+    protected static function getTransformerSteps()
     {
-        $content = $this->content;
-
-        foreach (static::TRANSFORM_STEPS as $step) {
-            $content = static::callTransformer($step, $content);
-
-            if($content === null) {
-                throw new InvalidTagFormat("Response tag format is invalid. Failed at step: $step");
-            }
-
-            if(empty($content)) {
-                return $content;
-            }
-        }
-
-        return $content;
+        return ['newlines', 'shortArray', 'keyNames', 'varsOfType', 'types', 'repeatedObject', 'decode'];
     }
 
     /**
@@ -130,7 +90,7 @@ class ResponseParser
     }
 
     /**
-     * Decode JSON string into PHP 2d array.
+     * Decode JSON string into PHP array.
      *
      * @param $content
      *
@@ -139,41 +99,5 @@ class ResponseParser
     protected static function transformDecode($content)
     {
         return json_decode($content, true);
-    }
-
-    /**
-     * Call transformer method by it's partial name.
-     *
-     * @param string $name Transformer name
-     *
-     * @return string|array
-     */
-    protected static function callTransformer($name, $content)
-    {
-        $transformer = static::getTransformerMethodName($name);
-
-        if(! method_exists(static::class, $transformer)) {
-            return $content;
-        }
-
-        return static::$transformer($content);
-    }
-
-    /**
-     * Get method name for transformer by it's partial name.
-     *
-     * @param string $name Transformer name
-     *
-     * @return string
-     */
-    protected static function getTransformerMethodName($name)
-    {
-        // Convert snake_case (if present) to camelCase
-        $name = camel_case($name);
-
-        // Capitalize first letter
-        $name = ucfirst($name);
-
-        return "transform$name";
     }
 }

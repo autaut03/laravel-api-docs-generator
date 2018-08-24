@@ -45,11 +45,7 @@ class GenerateDocumentation extends BaseCommand
             return;
         }
 
-        $parsedRoutes = collect($this->processRoutes())
-            ->groupBy('resource')
-            ->sortBy(function ($value, $resource) {
-                return $resource;
-            }); // Sort by resource name in alphabetical order
+        $parsedRoutes = $this->processRoutes();
 
         $this->writeAll($parsedRoutes);
     }
@@ -114,7 +110,7 @@ class GenerateDocumentation extends BaseCommand
     /**
      * Writes parsed routes into everything needed (html, postman collection).
      *
-     * @param  Collection $parsedRoutes
+     * @param  RouteWrapper[] $parsedRoutes
      *
      * @return void
      */
@@ -130,10 +126,11 @@ class GenerateDocumentation extends BaseCommand
 
         file_put_contents($outputPath . DIRECTORY_SEPARATOR . 'index.html', $documentation);
 
-        if ($this->option('noPostmanGeneration') !== true) {
+        // broken :(
+        /*if ($this->option('noPostmanGeneration') !== true) {
             $collection = (new CollectionGenerator($parsedRoutes))->getCollection();
 
             file_put_contents($outputPath . DIRECTORY_SEPARATOR . 'collection.json', $collection);
-        }
+        }*/
     }
 }

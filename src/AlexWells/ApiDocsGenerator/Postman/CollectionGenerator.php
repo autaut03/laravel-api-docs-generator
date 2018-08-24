@@ -2,69 +2,158 @@
 
 namespace AlexWells\ApiDocsGenerator\Postman;
 
+use AlexWells\ApiDocsGenerator\Parsers\RouteWrapper;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Collection;
 
 class CollectionGenerator
 {
     /**
-     * @var Collection
+     * @var array[]
      */
-    private $routeGroups;
+    private $routes;
 
     /**
      * CollectionGenerator constructor.
      *
-     * @param Collection $routeGroups
+     * @param array[] $routes
      */
-    public function __construct(Collection $routeGroups)
+    public function __construct(array $routes)
     {
-        $this->routeGroups = $routeGroups;
+        $this->routes = $routes;
     }
 
+    /**
+     * Return generated collection in JSON format.
+     *
+     * All information is available here: https://schema.getpostman.com/json/collection/v2.0.0/docs/index.html
+     *
+     * @return string
+     */
     public function getCollection()
     {
-        $collection = [
-            'variables' => [],
+        $collection = array_merge([
             'info' => [
-                'name' => '',
-                '_postman_id' => Uuid::uuid4()->toString(),
-                'description' => '',
+                'name' => $this->getName(),
+                'description' => $this->getDescription(),
+                'version' => $this->getVersion(),
                 'schema' => 'https://schema.getpostman.com/json/collection/v2.0.0/collection.json',
-            ],
-            'item' => $this->routeGroups->map(function ($routes, $groupName) {
-                return [
-                    'name' => $groupName,
-                    'description' => '',
-                    'item' => $routes->map(function ($route) {
-                        return [
-                            'name' => $route['title'] != '' ? $route['title'] : url($route['uri']),
-                            'request' => [
-                                'url' => url($route['uri']),
-                                'method' => $route['methods'][0],
-                                'body' => [
-                                    'mode' => 'formdata',
-                                    'formdata' => collect($route['parameters']['query'])->map(function ($parameter) {
-                                        return [
-                                            'key' => $parameter['name'],
-                                            'value' => '',
-                                            'type' => collect($parameter['rules'])->contains(function ($rule) {
-                                                return in_array($rule, ['file', 'image']);
-                                                // TODO: advanced mime checks
-                                            }) ? 'file' : 'text', // this check is fine for now
-                                            'enabled' => true,
-                                        ];
-                                    })->values()->toArray(),
-                                ],
-                                'description' => $route['description'],
-                                'response' => [],
-                            ],
-                        ];
-                    })->toArray(),
-                ];
-            })->values()->toArray(),
-        ];
+            ]
+        ], $this->getFolder());
 
         return json_encode($collection);
+    }
+
+    protected function getFolder($name = null) {
+        $folder = [
+            'name' => $name,
+            'variable' => $this->getVariables($name),
+            'event' => $this->getEvents($name),
+            'auth' => $this->getAuth($name),
+            'item' => $this->getItems($folder)
+        ];
+    }
+
+    protected function getItems(array $input, array $formatted = []) {
+        foreach ($input as $route) {
+            $resource = $route['resource'];
+
+            while (count($resource) > 1) {
+                $key = array_shift($resource);
+
+                $folder = $this->getFolder($resource);
+            }
+
+            $array[array_shift($resource)] = $value;
+
+            $formatted = array_merge($formatted, $array);
+        }
+
+        return [];
+        /*$this->routeGroups->map(function ($routes, $groupName) {
+            return [
+                'name' => $groupName,
+                'description' => '',
+                'item' => $routes->map(function ($route) {
+                    return [
+                        'name' => $route['title'] != '' ? $route['title'] : url($route['uri']),
+                        'request' => [
+                            'url' => url($route['uri']),
+                            'method' => $route['methods'][0],
+                            'body' => [
+                                'mode' => 'formdata',
+                                'formdata' => collect($route['parameters']['query'])->map(function ($parameter) {
+                                    return [
+                                        'key' => $parameter['name'],
+                                        'value' => '',
+                                        'type' => collect($parameter['rules'])->contains(function ($rule) {
+                                            return in_array($rule, ['file', 'image']);
+                                            // TODO: advanced mime checks
+                                        }) ? 'file' : 'text', // this check is fine for now
+                                        'enabled' => true,
+                                    ];
+                                })->values()->toArray(),
+                            ],
+                            'description' => $route['description'],
+                            'response' => [],
+                        ],
+                    ];
+                })->toArray(),
+            ];
+        })->values()->toArray();*/
+    }
+
+    /**
+     * Get display name
+     *
+     * @return string
+     */
+    protected function getName() {
+        return config('app.name');
+    }
+
+    /**
+     * Get description
+     *
+     * @return string|array
+     */
+    protected function getDescription() {
+        return 'Automatically generated by laravel-api-docs-generator';
+    }
+
+    /**
+     * Get version
+     *
+     * @return string
+     */
+    protected function getVersion() {
+        return '1.0.0';
+    }
+
+    /**
+     * Get set of variables
+     *
+     * @return array
+     */
+    protected function getVariables(string $folderName = null) {
+        return [];
+    }
+
+    /**
+     * Get set of events
+     *
+     * @return array
+     */
+    protected function getEvents(string $folderName = null) {
+        return [];
+    }
+
+    /**
+     * Get auth
+     *
+     * @return array|null
+     */
+    protected function getAuth(string $folderName = null) {
+        return null;
     }
 }

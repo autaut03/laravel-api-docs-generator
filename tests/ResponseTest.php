@@ -2,6 +2,7 @@
 
 namespace AlexWells\ApiDocsGenerator\Tests;
 
+use AlexWells\ApiDocsGenerator\Exceptions\InvalidFormat;
 use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 use AlexWells\ApiDocsGenerator\Tests\Fixtures\TestResponseController;
 
@@ -114,7 +115,7 @@ class ResponseTest extends BaseRouteTestingClass
 
     public function testThatInvalidTagFormatExceptionIsThrown()
     {
-        $this->expectException(InvalidTagFormat::class);
+        $this->expectException(InvalidFormat::class);
 
         $this->wrappedRoute(TestResponseController::class . '@invalid')->getResponses();
     }
