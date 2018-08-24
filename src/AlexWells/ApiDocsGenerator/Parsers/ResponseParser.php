@@ -3,7 +3,6 @@
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
 use AlexWells\ApiDocsGenerator\Helpers;
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
 
 class ResponseParser extends AbstractStepTransformer
 {

@@ -2,7 +2,6 @@
 
 namespace AlexWells\ApiDocsGenerator\Parsers;
 
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidFormat;
 use ReflectionClass;
 use ReflectionParameter;
 use Illuminate\Routing\Route;
@@ -11,7 +10,7 @@ use Illuminate\Support\Collection;
 use Mpociot\Reflection\DocBlock\Tag;
 use AlexWells\ApiDocsGenerator\Helpers;
 use Illuminate\Foundation\Http\FormRequest;
-use AlexWells\ApiDocsGenerator\Exceptions\InvalidTagFormat;
+use AlexWells\ApiDocsGenerator\Exceptions\InvalidFormat;
 use AlexWells\ApiDocsGenerator\Exceptions\ClosureRouteException;
 
 class RouteWrapper

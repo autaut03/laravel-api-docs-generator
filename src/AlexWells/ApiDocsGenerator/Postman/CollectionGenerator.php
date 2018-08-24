@@ -2,8 +2,6 @@
 
 namespace AlexWells\ApiDocsGenerator\Postman;
 
-use AlexWells\ApiDocsGenerator\Parsers\RouteWrapper;
-use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Collection;
 
 class CollectionGenerator
@@ -104,7 +102,7 @@ class CollectionGenerator
     }
 
     /**
-     * Get display name
+     * Get display name.
      *
      * @return string
      */
@@ -113,7 +111,7 @@ class CollectionGenerator
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string|array
      */
@@ -122,7 +120,7 @@ class CollectionGenerator
     }
 
     /**
-     * Get version
+     * Get version.
      *
      * @return string
      */
@@ -131,7 +129,7 @@ class CollectionGenerator
     }
 
     /**
-     * Get set of variables
+     * Get set of variables.
      *
      * @return array
      */
@@ -140,7 +138,7 @@ class CollectionGenerator
     }
 
     /**
-     * Get set of events
+     * Get set of events.
      *
      * @return array
      */
@@ -149,7 +147,7 @@ class CollectionGenerator
     }
 
     /**
-     * Get auth
+     * Get auth.
      *
      * @return array|null
      */
